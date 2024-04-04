@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addReport } from '../store/reports';
+import { addReport, updateReport } from '../store/reports';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ReportForm = ({ report, formType }) => {
@@ -12,6 +12,7 @@ const ReportForm = ({ report, formType }) => {
   //const [submitted, setSubmitted] = useState(false);
 
   const reports = useSelector(state=>state.reports)
+  const currReportId = Number(Object.keys(reports)[Object.keys(reports).length - 1])
   const newReportId = Number(Object.keys(reports)[Object.keys(reports).length - 1]) + 1; 
   
   const dispatch = useDispatch()
@@ -34,7 +35,7 @@ const ReportForm = ({ report, formType }) => {
 
     console.log('LENGTH OF ERRORS', Object.keys(errors).length)
 
-    if (!Object.keys(errorHandle).length) {
+    if (!Object.keys(errorHandle).length && formType === "Create Report") {
       setErrors({});
       report = { ...report, understanding, improvement };
 
@@ -42,6 +43,16 @@ const ReportForm = ({ report, formType }) => {
       report = newReport;
 
       navigate(`/reports/${newReportId}`)
+    }
+
+    if (!Object.keys(errorHandle).length && formType === "Update Report") {
+      setErrors({});
+      report = { ...report, understanding, improvement };
+
+      const newReport = await dispatch(updateReport(report));
+      report = newReport;
+
+      navigate(`/reports/${currReportId}`)
     }
 
 

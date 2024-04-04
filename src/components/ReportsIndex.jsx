@@ -9,7 +9,6 @@ const ReportsIndex = () => {
   const dispatch = useDispatch();
   const reports = Object.values(useSelector(state=>state.reports)); // populate from Redux store
 
-  //console.log(reports)
 
   useEffect(() => {
     dispatch(fetchReports())

@@ -77,6 +77,21 @@ export const addReport = (report) => async dispatch => {
 }
 
 //Edit a Report
+export const updateReport = (report) => async dispatch => {
+  const res = await fetch(`/api/reports/${report.id}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(report)
+  })
+
+  if (res.ok) {
+    const updatedReport = await res.json();
+    dispatch(editReport(updatedReport))
+  } else {
+    console.error("Please complete your edit!")
+  }
+}
+
 
 
 /** Selectors: */
